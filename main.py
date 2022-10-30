@@ -37,7 +37,7 @@ while True:
     #insert a bounding box around any detected blobs
     contours, hierarchies = cv2.findContours(postprocessedImage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     blank = np.zeros(postprocessedImage.shape[:2], dtype='uint8')
-    cv2.drawContours(frame, contours, -1, (255, 0, 0), 1)
+    cv2.drawContours(frame, contours, -1, (255, 0, 0), -1)
 
     coinCount = len(contours)
     #Draw text to display current threshold

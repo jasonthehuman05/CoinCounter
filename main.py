@@ -19,7 +19,7 @@ def dilatation(src):
 
 
 cam = cv2.VideoCapture(0)
-
+lbLim = 128
 while True:
     frameCaptured, frame = cam.read() #Load image from camera
 
@@ -27,18 +27,33 @@ while True:
                                                         # for shiny on a less vibrant background
     
     #highlight things in a certain boundary
-    lb = np.array([128])
+    lb = np.array([lbLim])
     ub = np.array([255])
     highlighetedImage = cv2.inRange(greyscale, lb, ub)
     
-    postprocessedimage = dilatation(erosion(highlighetedImage))
+    #Does some postprocessing in an attempt to make blobs more accurate
+    postprocessedImage = dilatation(erosion(highlighetedImage))
     
-    
+    #insert a bounding box around any detected blobs
+    contours, hierarchies = cv2.findContours(postprocessedImage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    blank = np.zeros(postprocessedImage.shape[:2], dtype='uint8')
+    cv2.drawContours(frame, contours, -1, (255, 0, 0), 1)
+
+    #Draw text to display current threshold
+    cv2.putText(frame, f"CURRENT LOWER BOUND: {lbLim}", (0, 300), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,0,0), 2)
+
     #Displaying the various images
     cv2.imshow("Window", frame)
     cv2.imshow("Greyscale", greyscale)
     cv2.imshow("Ranged Image", highlighetedImage)
+    cv2.imshow("Postprocessed Image", postprocessedImage)
 
-    #If escape is pressed, end the loop, and therefore, the program
-    if cv2.waitKey(10)==27:
+    
+    key = cv2.waitKey(10)
+    if key == 27: #If escape is pressed, end the loop, and therefore, the program
         break
+    elif key == 61:
+        lbLim += 1
+    elif key == 45:
+        lbLim -= 1
+

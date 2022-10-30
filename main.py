@@ -3,14 +3,14 @@ import numpy as np
 
 # Two postprocessing methods.=
 def erosion(src):
-    erosion_size = 15
+    erosion_size = 32
     erosion_shape = cv2.MORPH_ELLIPSE
     element = cv2.getStructuringElement(erosion_shape, (2 * erosion_size + 1, 2 * erosion_size + 1), (erosion_size, erosion_size))
     erosion_dst = cv2.erode(src, element)
     return erosion_dst
 
 def dilatation(src):
-    dilatation_size = 15
+    dilatation_size = 18
     dilation_shape = cv2.MORPH_ELLIPSE
     element = cv2.getStructuringElement(dilation_shape, (2 * dilatation_size + 1, 2 * dilatation_size + 1),
                                        (dilatation_size, dilatation_size))
@@ -19,7 +19,7 @@ def dilatation(src):
 
 
 cam = cv2.VideoCapture(0)
-lbLim = 128
+lbLim = 64
 while True:
     frameCaptured, frame = cam.read() #Load image from camera
 

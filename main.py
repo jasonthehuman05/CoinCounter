@@ -39,14 +39,16 @@ while True:
     blank = np.zeros(postprocessedImage.shape[:2], dtype='uint8')
     cv2.drawContours(frame, contours, -1, (255, 0, 0), 1)
 
+    coinCount = len(contours)
     #Draw text to display current threshold
     cv2.putText(frame, f"CURRENT LOWER BOUND: {lbLim}", (0, 300), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,0,0), 2)
+    cv2.putText(frame, f"COINS COUNTED: {coinCount}", (0, 350), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,0,0), 2)
 
     #Displaying the various images
     cv2.imshow("Window", frame)
-    cv2.imshow("Greyscale", greyscale)
-    cv2.imshow("Ranged Image", highlighetedImage)
-    cv2.imshow("Postprocessed Image", postprocessedImage)
+    #cv2.imshow("Greyscale", greyscale)
+    #cv2.imshow("Ranged Image", highlighetedImage)
+    #cv2.imshow("Postprocessed Image", postprocessedImage)
 
     
     key = cv2.waitKey(10)
